@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  </head>
+  <body>
+
+    <header>
+        <nav class="container container--70">
+            <ul class="nav--actions">
+                {% if user.is_authenticated %}
+                <li class="logged-user">
+                    <span>Witaj {{ user.username }}</span>
+                    <ul class="dropdown">
+                      <li><a href="#">Profil</a></li>
+                      <li><a href="#">Ustawienia</a></li>
+                      <li><a href="{% url 'home' %}">Wyloguj</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                    {% block nav_actions %}
+                    <!-- Placeholder for navigation actions  -->
+                    {% endblock %}
+                {% endif %}
+            </ul>
+            <ul>
+                {% block extra_links %}
+                <!-- Placeholder for navigation actions -->
+                {% include 'navigation.html' %}
+                {% endblock %}
+
+            </ul>
+        </nav>
+        <div>{% block div %}{% endblock %}</div>
+    </header>
+
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+
+    <footer>
+      <div id="contact" class="contact">
+        <h2>Skontaktuj się z nami</h2>
+        <h3>Formularz kontaktowy</h3>
+        <form class="form--contact">
+          <div class="form-group form-group--50"><input type="text" name="name" placeholder="Imię" /></div>
+          <div class="form-group form-group--50"><input type="text" name="surname" placeholder="Nazwisko" /></div>
+          <div class="form-group"><textarea name="message" placeholder="Wiadomość" rows="1"></textarea></div>
+          <button class="btn" type="submit">Wyślij</button>
+        </form>
+      </div>
+      <div class="bottom-line">
+        <span class="bottom-line--copy">Copyright &copy; 2019</span>
+        <div class="bottom-line--icons">
+          <a href="#" class="btn btn--small"><img src={% static 'images/icon-facebook.svg' %}/></a>
+          <a href="#" class="btn btn--small"><img src={% static 'images/icon-instagram.svg' %}/></a>
+        </div>
+      </div>
+      {% block footer_content %}{% endblock %}
+    </footer>
+
+    {% block scripts %}<script src="{% static 'js/app.js' %}"></script>{% endblock %}
+  <!-- skasowac na koniec -->
+  {% if user.is_authenticated %}
+            <p>Aktualnie zalogowany użytkownik to {{ user.username }}</p>
+            <a href="/logout">Wyloguj</a>
+        {% else %}
+            <p>Uzytkownik nie jest zalogowany</p>
+            <a href="/login">Zaloguj</a>
+        {% endif %}
+
+
+  </body>
+</html>
